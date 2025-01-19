@@ -8,7 +8,7 @@
     "vscode": "^1.96.0"
   },
   "categories": [
-    "Other"
+    "Formatters"
   ],
   "activationEvents": ["onStartupFinished"],
   "main": "./extension.js",
@@ -36,5 +36,9 @@
     "eslint": "^9.16.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wierdest/version-symbiosis.git"
   }
 }
