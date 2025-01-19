@@ -5,6 +5,7 @@
   "version": "0.0.1",
   "publisher": "wierdest",
   "license": "UNLICENSED",
+  "icon":"icon.png",
   "engines": {
     "vscode": "^1.96.0"
   },

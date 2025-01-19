@@ -3,7 +3,6 @@ const vscode = require('vscode')
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-	
 	if (vscode.workspace.workspaceFolders === undefined || vscode.workspace.workspaceFolders.length === 0) {
 		vscode.window.showErrorMessage('VersionSymbiosis: No workspace folder is open!')
 		return
