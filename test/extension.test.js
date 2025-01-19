@@ -33,15 +33,20 @@ suite('VersionSymbiosis Tests ', () => {
 		const packageJson = JSON.parse(packageJsonContent.toString())
 		const newVersion = '2.0.0'
 		packageJson.version = newVersion
-		await vscode.workspace.fs.writeFile(packageJsonPath, Buffer.from(JSON.stringify(packageJson, null, 2)))
-		await new Promise(resolve => setTimeout(resolve, 2000))
-		const targetFilePath = vscode.Uri.joinPath(workspaceFolder.uri, 'index.js')
-		const targetFileContent = (await vscode.workspace.fs.readFile(targetFilePath)).toString()
-		const variableRegex = /MY_VERSION\s*=\s*['"]([\d.]+)['"]/
-		const match = RegExp(variableRegex).exec(targetFileContent)
-		assert.ok(match, `Variable MY_VERSION not found in ${targetFilePath}!`)
-		const updatedVersion = match[1]
-		assert.strictEqual(updatedVersion, newVersion, `Expected version ${newVersion}, but got ${updatedVersion}!`)
+		const originalFile = await vscode.workspace.fs.readFile(packageJsonPath)
+		try {
+			await vscode.workspace.fs.writeFile(packageJsonPath, Buffer.from(JSON.stringify(packageJson, null, 2)))
+			await new Promise(resolve => setTimeout(resolve, 2000))
+			const targetFilePath = vscode.Uri.joinPath(workspaceFolder.uri, 'index.js')
+			const targetFileContent = (await vscode.workspace.fs.readFile(targetFilePath)).toString()
+			const variableRegex = /MY_VERSION\s*=\s*['"]([\d.]+)['"]/
+			const match = RegExp(variableRegex).exec(targetFileContent)
+			assert.ok(match, `Variable MY_VERSION not found in ${targetFilePath}!`)
+			const updatedVersion = match[1]
+			assert.strictEqual(updatedVersion, newVersion, `Expected version ${newVersion}, but got ${updatedVersion}!`)
+		} finally {
+			await vscode.workspace.fs.writeFile(packageJsonPath, originalFile)
+		}
 	})
 
 	test('fails to synchronize', async () => {
