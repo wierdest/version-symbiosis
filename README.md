@@ -27,6 +27,8 @@ Issues are yet to be known.
 ### 1.0.0
 
 Initial release of version-symbiosis
+100% unit tests coverage.
+Check version-symbiosis-test-project for a workspace example
 
 ---
 **Enjoy!**
