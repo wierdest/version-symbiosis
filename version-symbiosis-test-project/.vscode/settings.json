@@ -1,0 +1,13 @@
+{
+    "versionSymbiosis.filesToUpdate": [
+        { 
+            "targetFile": "src/app.js",
+            "targetVariable": "MY_VERSION"
+        },
+
+        {
+            "targetFile": "index.js",
+            "targetVariable": "MY_VERSION"
+        }        
+    ]
+}

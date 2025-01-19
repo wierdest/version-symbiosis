@@ -27,7 +27,7 @@
     }
   },
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint extension.js",
     "pretest": "npm run lint",
     "test": "vscode-test"
   },
