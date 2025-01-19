@@ -4,6 +4,7 @@
   "description": "links package.json version to versioning variables in project files set by the user ",
   "version": "0.0.1",
   "publisher": "wierdest",
+  "license": "UNLICENSED",
   "engines": {
     "vscode": "^1.96.0"
   },
