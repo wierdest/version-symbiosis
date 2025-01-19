@@ -2,8 +2,16 @@ const vscode = require('vscode')
 /**
  * @param {vscode.ExtensionContext} context
  */
-function activate(context) {	
-	const packageJsonPattern = new vscode.RelativePattern(vscode.workspaceFolders[0], '**/package.json')
+function activate(context) {
+	
+	if (vscode.workspace.workspaceFolders === undefined || vscode.workspace.workspaceFolders.length === 0) {
+		vscode.window.showErrorMessage('VersionSymbiosis: No workspace folder is open!')
+		return
+	}
+
+	const workspaceFolder = vscode.workspace.workspaceFolders[0]
+
+	const packageJsonPattern = new vscode.RelativePattern(workspaceFolder, 'package.json')
 	const watcher = vscode.workspace.createFileSystemWatcher(packageJsonPattern)
 	watcher.onDidChange(updateVersionInFile)
 	async function updateVersionInFile() {
@@ -33,12 +41,12 @@ function activate(context) {
 			}
 
 			for (const fileConfig of filesToUpdate) {
-				const { targetFile, variableName: targetVariable } = fileConfig
+				const { targetFile, targetVariable } = fileConfig
 				if (!targetFile || !targetVariable) {
 					vscode.window.showWarningMessage('VersionSymbiosis: Each entry in "filesToUpdate" must have "targetFile" and "targetVariable " properties.')
 					continue
 				}
-				
+
 				const targetFilePattern = new vscode.RelativePattern(vscode.workspace.workspaceFolders[0], targetFile)
 				const [targetFileUri] = await vscode.workspace.findFiles(targetFilePattern)
 				if (!targetFileUri) {
@@ -47,11 +55,11 @@ function activate(context) {
 				}
 
 				const targetFileContent = (await vscode.workspace.fs.readFile(targetFileUri)).toString()
-				const regex = new RegExp(`(${targetVariable}\s*=\s*['"])([\d.]+)(['"])`)
+				const regex = new RegExp(`(${targetVariable}\\s*=\\s*['"])([\\d.]+)(['"])`)
 				const updatedContent = targetFileContent.replace(regex, `$1${version}$3`)
 
 				await vscode.workspace.fs.writeFile(targetFileUri, Buffer.from(updatedContent, 'utf-8'))
-				vscode.window.showInformationMessage(`VersionSymbiosis: Updated version in ${targetFile}.`)
+				vscode.window.showInformationMessage(`VersionSymbiosis: Updated version to ${version} in ${targetFile}.`)
 			}
 		} catch (e) {
 			vscode.window.showErrorMessage(`VersionSymbiosis: Error: ${e.message}`)
@@ -61,7 +69,9 @@ function activate(context) {
 }
 
 // This method is called when your extension is deactivated
-function deactivate() {}
+function deactivate () {
+	// no need to do anything here for our extension
+}
 
 module.exports = {
 	activate,
