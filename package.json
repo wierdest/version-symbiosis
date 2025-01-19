@@ -1,0 +1,40 @@
+{
+  "name": "version-symbiosis",
+  "displayName": "version-symbiosis",
+  "description": "links package.json version to versioning variables in project files set by the user ",
+  "version": "0.0.1",
+  "publisher": "wierdest",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "VersionSymbiosis",
+      "properties": {
+        "versionSymbiosis.filesToUpdate": {
+          "type": "array",
+          "description": "An array of objects with 'targetFile' and 'variableName' properties.",
+          "default": []
+        }
+      }
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.96.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "eslint": "^9.16.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1"
+  }
+}
